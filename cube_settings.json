@@ -5,5 +5,6 @@
     "turn_right" : "right arrow",
     "model" : "cube",
     "texture" : "brick", 
-    "controls" : "controls"
+    "controls" : "controls",
+    "color" : "#FFA500"
 }
