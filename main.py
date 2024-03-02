@@ -1,12 +1,13 @@
 from ursina import Ursina, Entity
 from ursina import color
+from my_cube import MyCube
 
 class MyGame:
     def __init__(self) -> None:
         self.app = Ursina()
 
     def add_my_block(self) -> None:
-        self.my_block = Entity(
+        self.my_block = MyCube(
             model = 'cube', 
             color = color.orange, 
             texture = 'brick', 
