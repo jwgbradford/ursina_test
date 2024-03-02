@@ -1,5 +1,4 @@
 from ursina import Ursina, Entity
-from ursina import color
 from my_cube import MyCube
 from json import load
 
