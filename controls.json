@@ -1,8 +1,0 @@
-{
-    "movement" : {
-        "up" : "up arrow",
-        "down" : "down arrow",
-        "left" : "left arrow",
-        "right" : "right arrow"
-    }
-}

@@ -1,0 +1,9 @@
+{
+    "turn_up" : "up arrow",
+    "turn_down" : "down arrow",
+    "turn_left" : "left arrow",
+    "turn_right" : "right arrow",
+    "model" : "cube",
+    "texture" : "brick", 
+    "controls" : "controls"
+}

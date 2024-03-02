@@ -5,20 +5,20 @@ class MyCube(Entity):
     def __init__(self, add_to_scene_entities=True, **kwargs):
         super().__init__(add_to_scene_entities, **kwargs)
         # default aswd controls
-        self.controls = {
-            "up" : "a",
-            "down" : "s",
-            "left" : "d",
-            "right" : "a"
-        }
+        self.turn_up = 'w'
+        self.turn_down = 's'
+        self.turn_right = 'd'
+        self.turn_left = 'a'
         for key, value in kwargs.items():
             setattr(self, key, value)
 
     def update(self) -> None:
         self.rotation_x += (
-            (held_keys[self.controls['down']] - held_keys[self.controls['up']]) 
+            (held_keys[self.turn_down] - held_keys[self.turn_up]) 
             * time.dt * 100)
-        #self.rotation_y += 1
-        self.rotation_z += (
-            (held_keys[self.controls['right']] - held_keys[self.controls['left']]) 
+        self.rotation_y += (
+            (held_keys[self.turn_right] - held_keys[self.turn_left]) 
             * time.dt * 100)
+        #self.rotation_z += (
+        #    (held_keys[self.turn_right] - held_keys[self.turn_left]) 
+        #    * time.dt * 100)
