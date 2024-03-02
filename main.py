@@ -6,7 +6,7 @@ class MyGame:
         self.app = Ursina()
 
     def add_entities(self) -> None:
-        self.my_ball = Entity(model = 'sphere')
+        self.my_ball = Entity(model = 'quad', color = color.orange, texture = 'brick')
 
 
     def run(self) -> None:
