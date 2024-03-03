@@ -1,5 +1,6 @@
 from ursina import Entity
 from ursina import held_keys, time
+from ursina import camera
 
 class MyCube(Entity):
     def __init__(self, add_to_scene_entities=True, **kwargs):
@@ -11,6 +12,12 @@ class MyCube(Entity):
         self.turn_left = 'a'
         for key, value in kwargs.items():
             setattr(self, key, value)
+        self.camera_pivot = Entity(parent=self, y=0.5)
+        # configure the camera
+        camera.parent = self.camera_pivot
+        camera.position = (0,0,0)
+        camera.rotation = (0,0,0)
+        camera.fov = 90
 
     def update(self) -> None:
         self.rotation_x += (

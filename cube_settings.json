@@ -6,5 +6,6 @@
     "model" : "cube",
     "texture" : "brick", 
     "controls" : "controls",
-    "color" : "#FFA500"
+    "color" : "#FFA500",
+    "position" : "(0, 0, 0)"
 }

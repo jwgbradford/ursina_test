@@ -1,19 +1,13 @@
-from ursina import Ursina, Entity
-from ursina import color
+from ursina import Ursina, Entity, Sky
 from my_cube import MyCube
-from json import load
+from utils import load_kwargs
 
 class MyGame:
     def __init__(self) -> None:
         self.app = Ursina()
 
-    def load_kwargs(self) -> dict:
-        with open("cube_settings.json") as input_file:
-            dict_data = load(input_file)
-        return dict_data
-
     def add_my_block(self) -> None:
-        settings = self.load_kwargs()
+        settings = load_kwargs("cube_settings.json")
         self.my_block = MyCube(**settings)
 
     def add_ground(self) -> None:
@@ -26,7 +20,8 @@ class MyGame:
 
     def run(self) -> None:
         self.add_my_block()
-        self.add_ground()
+        self.add_ground() # not seeing - possible camera error
+        Sky()
         self.app.run()
 
 if __name__ == '__main__':
