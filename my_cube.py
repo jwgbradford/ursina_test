@@ -12,7 +12,7 @@ class MyCube(Entity):
         self.turn_left = 'a'
         for key, value in kwargs.items():
             setattr(self, key, value)
-        self.camera_pivot = Entity(parent=self, y=0.5)
+        self.camera_pivot = Entity(parent=self, z=-2)
         # configure the camera
         camera.parent = self.camera_pivot
         camera.position = (0,0,0)
