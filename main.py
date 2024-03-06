@@ -1,4 +1,4 @@
-from ursina import Ursina, Entity, Sky, Vec3
+from ursina import Ursina, Entity, Sky
 from snake_head import SnakeHead
 from game_object import GameObject
 from utils import load_kwargs
@@ -7,9 +7,9 @@ class MyGame:
     def __init__(self) -> None:
         self.app = Ursina()
 
-    def add_snake_head(self) -> None:
+    def add_snake_head(self) -> SnakeHead:
         settings = load_kwargs("head_settings.json")
-        self.my_block = SnakeHead(**settings)
+        return SnakeHead(**settings)
 
     def add_ground(self) -> None:
         self.ground = Entity(
@@ -34,9 +34,9 @@ class MyGame:
 
 
     def run(self) -> None:
-        self.add_snake_head()
+        snake_head = self.add_snake_head()
         #self.add_ground() # no longer need - have array of cubes # not seeing - possible camera error
-        self.many_balls = self.add_balls()
+        many_balls = self.add_balls()
         Sky()
         self.app.run()
 
