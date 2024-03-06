@@ -22,6 +22,7 @@ class SnakeHead(GameObject):
         camera.fov = 90
 
     def update(self) -> None:
+        # need to replace with movement from FirstPersonController
         self.rotation_x += (
             (held_keys[self.turn_down] - held_keys[self.turn_up]) 
             * time.dt * 100)
@@ -31,3 +32,5 @@ class SnakeHead(GameObject):
         #self.rotation_z += (
         #    (held_keys[self.turn_right] - held_keys[self.turn_left]) 
         #    * time.dt * 100)
+        if held_keys[self.turn_down]:
+            print(f'{self.rotation_x=}')
