@@ -8,7 +8,7 @@ class MyGame:
         self.app = Ursina()
 
     def add_my_block(self) -> None:
-        settings = load_kwargs("cube_settings.json")
+        settings = load_kwargs("head_settings.json")
         self.my_block = SnakeHead(**settings)
 
     def add_ground(self) -> None:
@@ -20,7 +20,6 @@ class MyGame:
         )
 
     def add_balls(self) -> list[list[list[Entity]]]:
-        settings = load_kwargs("sphere_settings.json")
         array_size = 10
         array_of_balls = []
         for i in range(array_size):
@@ -28,7 +27,7 @@ class MyGame:
             for j in range(array_size):
                 row_of_balls = []
                 for k in range(array_size):
-                    row_of_balls.append(GameObject(x=i*2, y=j*2, z=k*2, **settings))
+                    row_of_balls.append(GameObject(x=i*2, y=j*2, z=k*2))
                 plane_of_balls.append(row_of_balls)
             array_of_balls.append(plane_of_balls)
         return array_of_balls

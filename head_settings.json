@@ -3,8 +3,8 @@
     "turn_down" : "down arrow",
     "turn_left" : "left arrow",
     "turn_right" : "right arrow",
-    "model" : "sphere",
-    "texture" : "grass", 
+    "texture" : "brick", 
     "controls" : "controls",
-    "position" : "(0, 0, 0)"
+    "position" : "(0, 0, 0)",
+    "color" : "#FFA500"
 }
