@@ -7,7 +7,7 @@ class MyGame:
     def __init__(self) -> None:
         self.app = Ursina()
 
-    def add_my_block(self) -> None:
+    def add_snake_head(self) -> None:
         settings = load_kwargs("head_settings.json")
         self.my_block = SnakeHead(**settings)
 
@@ -34,7 +34,7 @@ class MyGame:
 
 
     def run(self) -> None:
-        self.add_my_block()
+        self.add_snake_head()
         #self.add_ground() # no longer need - have array of cubes # not seeing - possible camera error
         self.many_balls = self.add_balls()
         Sky()

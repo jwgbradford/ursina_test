@@ -14,7 +14,7 @@ class SnakeHead(GameObject):
         for key, value in kwargs.items():
             setattr(self, key, value)
         self.z = -1
-        self.camera_pivot = Entity(parent=self, z=-2)
+        self.camera_pivot = Entity(parent=self)
         # configure the camera
         camera.parent = self.camera_pivot
         camera.position = (0,0,0)
