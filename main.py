@@ -1,5 +1,6 @@
-from ursina import Ursina, Entity, Sky
+from ursina import Ursina, Entity, Sky, Vec3
 from my_cube import MyCube
+from my_ball import MySphere
 from utils import load_kwargs
 
 class MyGame:
@@ -18,12 +19,31 @@ class MyGame:
             texture_scale = (4,4)
         )
 
+    def add_balls(self) -> list[list[list[Entity]]]:
+        #settings = load_kwargs("sphere_settings.json")
+        array_size = 10
+        array_of_balls = []
+        for i in range(array_size):
+            plane_of_balls = []
+            for j in range(array_size):
+                row_of_balls = []
+                for k in range(array_size):
+                    row_of_balls.append(MySphere(x=i*2, y=j*2, z=k*2, model="cube", texture="brick"))
+                plane_of_balls.append(row_of_balls)
+            array_of_balls.append(plane_of_balls)
+        return array_of_balls
+
+
     def run(self) -> None:
         self.add_my_block()
-        self.add_ground() # not seeing - possible camera error
+        #self.add_ground() # no longer need - have array of cubes # not seeing - possible camera error
+        self.many_balls = self.add_balls()
         Sky()
         self.app.run()
 
 if __name__ == '__main__':
     my_game = MyGame()
     my_game.run()
+
+# x=i, y=j, z=k, 
+#model="sphere", texture="grass"
