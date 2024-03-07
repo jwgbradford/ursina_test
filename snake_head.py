@@ -27,7 +27,7 @@ class SnakeHead(GameObject):
 
     def cardinalise(self, angle) -> int:
         angle = round(angle, 0)
-        cardinal_point = angle%90
+        cardinal_point = angle % 90
         if cardinal_point > 3:
             cardinal_point -= 4
         return cardinal_point * 90
@@ -43,7 +43,7 @@ class SnakeHead(GameObject):
             self.rotation_y += (self.rotation_dy * time.dt * self.rotation_speed)
             self.rotation_step -= round(abs((self.rotation_dx - self.rotation_dy) * time.dt * self.rotation_speed), 0)
             print(f'{self.rotation_step=}, {self.rotation_dx=}, {self.rotation_dy=}')
-            if self.rotation_step == 0: # reset
+            if abs(self.rotation_step) < 5: # reset
                 self.rotation_x = self.cardinalise(self.rotation_x)
                 self.rotation_y = self.cardinalise(self.rotation_y)
                 self.rotation_dx = 0
