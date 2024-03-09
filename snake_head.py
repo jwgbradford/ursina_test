@@ -22,7 +22,7 @@ class SnakeHead(GameObject):
         # configure the camera
         self.camera_pivot = Entity(parent=self)
         camera.parent = self.camera_pivot # lock camera to head object
-        camera.position = (0,0,0)
+        camera.position = (0, 0, -10)
         camera.rotation = (0,0,0)
         #camera.fov = 90
 
@@ -55,7 +55,13 @@ class SnakeHead(GameObject):
             self.rotation_x = self.cardinalise(self.rotation_x)
             self.rotation_y = self.cardinalise(self.rotation_y)
 
+    def recenter_position(self) -> None:
+        self.x = round(self.x, 0)
+        self.y = round(self.y, 0)
+        self.z = round(self.z, 0)
+
     def update(self) -> None:
+        print(self.position)
         # haven't decided on a motion method yet
         if self.motion_step > 0: # not turning, move forward
             self.position += self.forward * time.dt * self.motion_speed
@@ -66,8 +72,10 @@ class SnakeHead(GameObject):
             self.rotation_step -= time.dt * self.rotation_speed
             if self.rotation_step < 0: # reset
                 self.reset_rotation()
+                self.recenter_position()
         elif self.motion_step < 0:
             self.motion_step = 2
+            self.recenter_position()
                 #self.animate_position(self.position + self.forward, duration=0.5)
         #self.animate('position', self.forward, duration=0.5)
         '''
