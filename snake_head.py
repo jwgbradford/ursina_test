@@ -1,10 +1,10 @@
 from ursina import Entity
-from ursina import held_keys, time
+from ursina import time
 from ursina import camera
 from game_object import GameObject
 
 class SnakeHead(GameObject):
-    def __init__(self, add_to_scene_entities=True, **kwargs):
+    def __init__(self, add_to_scene_entities=True, **kwargs) -> None:
         super().__init__(add_to_scene_entities, **kwargs)
         # default aswd controls
         self.turn_up = 'w'
@@ -24,40 +24,44 @@ class SnakeHead(GameObject):
         camera.rotation = (0,0,0)
         #camera.fov = 90
 
-    def cardinalise(self, angle) -> int:
+    def cardinalise(self, angle:float=0) -> int:
+        if angle < 0: # be wary of -ve values
+            angle += 360
         cardinal_point = round(angle / 90, 0)
-        if abs(cardinal_point) > 3:
+        if cardinal_point > 3:
             cardinal_point = 0
         return cardinal_point * 90
 
-    def input(self, key):
+    def input(self, key) -> None:
         if self.rotation_step == 0: #we're not alredy in a turn
             match key:
                 case self.turn_left:
                     self.rotation_dy = -1
-                    #self.animate('rotation_y', self.rotation_y - 90, duration=.5)
                 case self.turn_right:
                     self.rotation_dy = 1
-                    #self.animate('rotation_y', self.rotation_y + 90, duration=.5)
                 case self.turn_up:
                     self.rotation_dx = -1
-                    #self.animate('rotation_x', self.rotation_x - 90, duration=.5)
                 case self.turn_down:
                     self.rotation_dx = 1
-                    #self.animate('rotation_x', self.rotation_x + 90, duration=.5)
-            self.rotation_step = 90
+            if self.rotation_dx ^ self.rotation_dy:
+                self.rotation_step = 90
 
     def reset_rotation(self) -> None:
             self.rotation_step = 0
-            self.rotation_x = self.cardinalise(self.rotation_x)
-            self.rotation_y = self.cardinalise(self.rotation_y)
             self.rotation_dx = 0
             self.rotation_dy = 0
+            self.rotation_x = self.cardinalise(self.rotation_x)
+            self.rotation_y = self.cardinalise(self.rotation_y)
 
     def update(self) -> None:
+        # haven't decided on a motion method yet
         #self.position += self.forward
         #self.animate_position(self.position + self.forward, duration=0.5)
         #self.animate('position', self.forward, duration=0.5)
+        '''
+        should start rotation on arrow keypress, then continue until 90
+        should then stop and centre on either 0, 90, 180, 270
+        '''
         if self.rotation_dx ^ self.rotation_dy:
             self.rotation_x += (self.rotation_dx * time.dt * self.rotation_speed)
             self.rotation_y += (self.rotation_dy * time.dt * self.rotation_speed)
