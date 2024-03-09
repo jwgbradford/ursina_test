@@ -55,7 +55,8 @@ class SnakeHead(GameObject):
 
     def update(self) -> None:
         # haven't decided on a motion method yet
-        #self.position += self.forward
+        if self.rotation_step == 0: # not turning, move forward
+            self.position += self.forward * time.dt * 2
         #self.animate_position(self.position + self.forward, duration=0.5)
         #self.animate('position', self.forward, duration=0.5)
         '''
