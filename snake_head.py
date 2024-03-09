@@ -15,6 +15,8 @@ class SnakeHead(GameObject):
         self.rotation_dy = 0
         self.rotation_step = 0
         self.rotation_speed = 100
+        self.motion_step = 2
+        self.motion_speed = 2
         for key, value in kwargs.items():
             setattr(self, key, value)
         # configure the camera
@@ -55,17 +57,20 @@ class SnakeHead(GameObject):
 
     def update(self) -> None:
         # haven't decided on a motion method yet
-        if self.rotation_step == 0: # not turning, move forward
-            self.position += self.forward * time.dt * 2
-        #self.animate_position(self.position + self.forward, duration=0.5)
-        #self.animate('position', self.forward, duration=0.5)
-        '''
-        should start rotation on arrow keypress, then continue until 90
-        should then stop and centre on either 0, 90, 180, 270
-        '''
-        if self.rotation_dx ^ self.rotation_dy:
+        if self.motion_step > 0: # not turning, move forward
+            self.position += self.forward * time.dt * self.motion_speed
+            self.motion_step -= time.dt * self.motion_speed
+        elif self.rotation_step > 0:
             self.rotation_x += (self.rotation_dx * time.dt * self.rotation_speed)
             self.rotation_y += (self.rotation_dy * time.dt * self.rotation_speed)
             self.rotation_step -= time.dt * self.rotation_speed
             if self.rotation_step < 0: # reset
                 self.reset_rotation()
+        elif self.motion_step < 0:
+            self.motion_step = 2
+                #self.animate_position(self.position + self.forward, duration=0.5)
+        #self.animate('position', self.forward, duration=0.5)
+        '''
+        should start rotation on arrow keypress, then continue until 90
+        should then stop and centre on either 0, 90, 180, 270
+        '''
