@@ -1,4 +1,5 @@
 {
     "model" : "sphere",
-    "texture" : "grass"
+    "texture" : "grass",
+    "collider" : "sphere"
 }

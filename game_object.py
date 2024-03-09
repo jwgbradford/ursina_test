@@ -7,7 +7,6 @@ class GameObject(Entity):
         settings = load_kwargs("sphere_settings.json")
         for key, value in settings.items():
             setattr(self, key, value)
-
         # custom object kwargs
         for key, value in kwargs.items():
             setattr(self, key, value)

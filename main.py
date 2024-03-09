@@ -34,11 +34,10 @@ class MyGame:
             array_of_balls[i][j][k] = GameObject(x=i*2, y=j*2, z=k*2)
         return array_of_balls
 
-
     def run(self) -> None:
-        snake_head = self.add_snake_head()
+        self.snake_head = self.add_snake_head()
         #self.add_ground() # no longer need - have array of cubes # not seeing - possible camera error
-        many_balls = self.add_balls()
+        self.many_balls = self.add_balls()
         Sky()
         self.app.run()
 
