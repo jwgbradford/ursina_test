@@ -6,5 +6,11 @@
     "texture" : "brick", 
     "controls" : "controls",
     "position" : "(0, 0, 0)",
-    "color" : "#FFA500"
+    "color" : "#FFA500",
+    "rotation_dx" : "0",
+    "rotation_dy" : "0",
+    "rotation_step" : "0",
+    "rotation_speed" : "100",
+    "motion_step" : "2",
+    "motion_speed" : "2"
 }

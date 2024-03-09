@@ -11,18 +11,12 @@ class SnakeHead(GameObject):
         self.turn_down = 's'
         self.turn_right = 'd'
         self.turn_left = 'a'
-        self.rotation_dx = 0 # our turn controller
-        self.rotation_dy = 0
-        self.rotation_step = 0
-        self.rotation_speed = 100
-        self.motion_step = 2
-        self.motion_speed = 2
         for key, value in kwargs.items():
             setattr(self, key, value)
         # configure the camera
         self.camera_pivot = Entity(parent=self)
         camera.parent = self.camera_pivot # lock camera to head object
-        camera.position = (0, 0, -10)
+        camera.position = (1, 1, -10)
         camera.rotation = (0,0,0)
         #camera.fov = 90
 
@@ -35,7 +29,7 @@ class SnakeHead(GameObject):
         return cardinal_point * 90
 
     def input(self, key) -> None:
-        if self.rotation_step == 0: #we're not alredy in a turn
+        if self.rotation_step == 0: # we're not already in a turn
             match key:
                 case self.turn_left:
                     self.rotation_dy = -1
@@ -61,24 +55,16 @@ class SnakeHead(GameObject):
         self.z = round(self.z, 0)
 
     def update(self) -> None:
-        print(self.position)
-        # haven't decided on a motion method yet
         if self.motion_step > 0: # not turning, move forward
             self.position += self.forward * time.dt * self.motion_speed
             self.motion_step -= time.dt * self.motion_speed
-        elif self.rotation_step > 0:
+        elif self.rotation_step > 0: # start turn at end of next move
             self.rotation_x += (self.rotation_dx * time.dt * self.rotation_speed)
             self.rotation_y += (self.rotation_dy * time.dt * self.rotation_speed)
             self.rotation_step -= time.dt * self.rotation_speed
-            if self.rotation_step < 0: # reset
+            if self.rotation_step < 0: # reset turn to zero
                 self.reset_rotation()
                 self.recenter_position()
-        elif self.motion_step < 0:
+        elif self.motion_step < 0: # finished turning / moving, move again
             self.motion_step = 2
             self.recenter_position()
-                #self.animate_position(self.position + self.forward, duration=0.5)
-        #self.animate('position', self.forward, duration=0.5)
-        '''
-        should start rotation on arrow keypress, then continue until 90
-        should then stop and centre on either 0, 90, 180, 270
-        '''

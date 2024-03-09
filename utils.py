@@ -5,7 +5,19 @@ def load_kwargs(file) -> dict:
         dict_data = load(input_file)
     if "scale" in dict_data.keys():
         dict_data = string_to_int(dict_data, "scale")
-    elif "position" in dict_data.keys():
+    if "rotation_dx" in dict_data.keys():
+        dict_data = string_to_int(dict_data, "rotation_dx")
+    if "rotation_dy" in dict_data.keys():
+        dict_data = string_to_int(dict_data, "rotation_dy")
+    if "rotation_step" in dict_data.keys():
+        dict_data = string_to_int(dict_data, "rotation_step")
+    if "rotation_speed" in dict_data.keys():
+        dict_data = string_to_int(dict_data, "rotation_speed")
+    if "motion_step" in dict_data.keys():
+        dict_data = string_to_int(dict_data, "motion_step")
+    if "motion_speed" in dict_data.keys():
+        dict_data = string_to_int(dict_data, "motion_speed")
+    if "position" in dict_data.keys():
         dict_data = string_to_tuple(dict_data, "position")
     return dict_data
 
