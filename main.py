@@ -35,6 +35,7 @@ class MyGame:
 
     def run(self) -> None:
         snake_head = self.add_snake_head()
+        print(f'{snake_head.position=}')
         #self.add_ground() # no longer need - have array of cubes # not seeing - possible camera error
         many_balls = self.add_balls()
         Sky()

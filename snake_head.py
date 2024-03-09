@@ -17,64 +17,50 @@ class SnakeHead(GameObject):
         self.rotation_speed = 100
         for key, value in kwargs.items():
             setattr(self, key, value)
-        self.z = -1
-        self.camera_pivot = Entity(parent=self)
         # configure the camera
+        self.camera_pivot = Entity(parent=self)
         camera.parent = self.camera_pivot # lock camera to head object
         camera.position = (0,0,0)
         camera.rotation = (0,0,0)
-        camera.fov = 90
+        #camera.fov = 90
 
     def cardinalise(self, angle) -> int:
-        angle = round(angle, 0)
-        cardinal_point = angle % 90
-        if cardinal_point > 3:
-            cardinal_point -= 4
+        cardinal_point = round(angle / 90, 0)
+        if abs(cardinal_point) > 3:
+            cardinal_point = 0
         return cardinal_point * 90
 
-    def update(self) -> None:
-        # need to replace with movement from FirstPersonController
-        if self.rotation_dx == 0 and self.rotation_dy == 0:
-            self.rotation_dx = held_keys[self.turn_down] - held_keys[self.turn_up]
-            self.rotation_dy = held_keys[self.turn_right] - held_keys[self.turn_left]
+    def input(self, key):
+        if self.rotation_step == 0: #we're not alredy in a turn
+            match key:
+                case self.turn_left:
+                    self.rotation_dy = -1
+                    #self.animate('rotation_y', self.rotation_y - 90, duration=.5)
+                case self.turn_right:
+                    self.rotation_dy = 1
+                    #self.animate('rotation_y', self.rotation_y + 90, duration=.5)
+                case self.turn_up:
+                    self.rotation_dx = -1
+                    #self.animate('rotation_x', self.rotation_x - 90, duration=.5)
+                case self.turn_down:
+                    self.rotation_dx = 1
+                    #self.animate('rotation_x', self.rotation_x + 90, duration=.5)
             self.rotation_step = 90
-        else:
+
+    def reset_rotation(self) -> None:
+            self.rotation_step = 0
+            self.rotation_x = self.cardinalise(self.rotation_x)
+            self.rotation_y = self.cardinalise(self.rotation_y)
+            self.rotation_dx = 0
+            self.rotation_dy = 0
+
+    def update(self) -> None:
+        #self.position += self.forward
+        #self.animate_position(self.position + self.forward, duration=0.5)
+        #self.animate('position', self.forward, duration=0.5)
+        if self.rotation_dx ^ self.rotation_dy:
             self.rotation_x += (self.rotation_dx * time.dt * self.rotation_speed)
             self.rotation_y += (self.rotation_dy * time.dt * self.rotation_speed)
-            self.rotation_step -= round(abs((self.rotation_dx - self.rotation_dy) * time.dt * self.rotation_speed), 0)
-            print(f'{self.rotation_step=}, {self.rotation_dx=}, {self.rotation_dy=}')
-            if abs(self.rotation_step) < 5: # reset
-                self.rotation_x = self.cardinalise(self.rotation_x)
-                self.rotation_y = self.cardinalise(self.rotation_y)
-                self.rotation_dx = 0
-                self.rotation_dy = 0
-
-        #self.rotation_z += (
-        #    (held_keys[self.turn_right] - held_keys[self.turn_left]) 
-        #    * time.dt * 100)
-        '''
-        # update our position in 2D
-        self.direction = Vec3(
-            self.forward * (
-                held_keys[self.controls['forward']] - held_keys[self.controls['backward']]
-                )
-            + self.right * (
-                held_keys[self.controls['right']] - held_keys[self.controls['left']]
-                )
-            ).normalized()
-        # stops you running into things
-        # feet_ray = raycast(self.position+Vec3(0,0.5,0), self.direction, traverse_target=self.traverse_target, ignore=self.ignore_list, distance=.5, debug=False)
-        head_ray = raycast(self.position+Vec3(0,self.height-.1,0), self.direction, traverse_target=self.traverse_target, ignore=self.ignore_list, distance=.5, debug=False)
-        if not head_ray.hit:
-            move_amount = self.direction * time.dt * self.speed
-            if raycast(self.position+Vec3(-.0,1,0), Vec3(1,0,0), distance=.5, traverse_target=self.traverse_target, ignore=self.ignore_list).hit:
-                move_amount[0] = min(move_amount[0], 0)
-            if raycast(self.position+Vec3(-.0,1,0), Vec3(-1,0,0), distance=.5, traverse_target=self.traverse_target, ignore=self.ignore_list).hit:
-                move_amount[0] = max(move_amount[0], 0)
-            if raycast(self.position+Vec3(-.0,1,0), Vec3(0,0,1), distance=.5, traverse_target=self.traverse_target, ignore=self.ignore_list).hit:
-                move_amount[2] = min(move_amount[2], 0)
-            if raycast(self.position+Vec3(-.0,1,0), Vec3(0,0,-1), distance=.5, traverse_target=self.traverse_target, ignore=self.ignore_list).hit:
-                move_amount[2] = max(move_amount[2], 0)
-            self.position += move_amount # think this is simple 2D movement
-            # self.position += self.direction * self.speed * time.dt
-        '''
+            self.rotation_step -= time.dt * self.rotation_speed
+            if self.rotation_step < 0: # reset
+                self.reset_rotation()
