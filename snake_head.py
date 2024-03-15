@@ -2,10 +2,14 @@ from ursina import Entity
 from ursina import time
 from ursina import camera
 from game_object import GameObject
+from utils import load_kwargs
 
 class SnakeHead(GameObject):
     def __init__(self, add_to_scene_entities=True, **kwargs) -> None:
         super().__init__(add_to_scene_entities, **kwargs)
+        settings = load_kwargs("head_settings.json")
+        for key, value in settings.items():
+            setattr(self, key, value)
         # configure the camera
         self.camera_pivot = Entity(parent=self)
         camera.parent = self.camera_pivot # lock camera to head object
@@ -61,6 +65,8 @@ class SnakeHead(GameObject):
         elif self.motion_step < 0: # finished turning / moving, move again
             self.motion_step = 2
             self.recenter_position()
+        '''
         for ball in self.many_balls:
             if self.intersects(ball).hit:
                 print('player is inside trigger box')
+        '''
