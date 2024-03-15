@@ -1,7 +1,7 @@
 from json import load
 
 def load_kwargs(file) -> dict:
-    with open(file) as input_file:
+    with open("./settings/"+file) as input_file:
         dict_data = load(input_file)
     if "scale" in dict_data.keys():
         dict_data = string_to_int(dict_data, "scale")
