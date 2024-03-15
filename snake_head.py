@@ -1,8 +1,10 @@
 from ursina import Entity
-from ursina import time
+from ursina import time, destroy
 from ursina import camera
 from game_object import GameObject
+from apple import Apple
 from utils import load_kwargs
+from random import randint
 
 class SnakeHead(GameObject):
     def __init__(self, add_to_scene_entities=True, **kwargs) -> None:
@@ -51,7 +53,7 @@ class SnakeHead(GameObject):
         self.y = round(self.y, 0)
         self.z = round(self.z, 0)
 
-    def update(self) -> None:
+    def move_turn(self) -> None:
         if self.motion_step > 0: # not turning, move forward
             self.position += self.forward * time.dt * self.motion_speed
             self.motion_step -= time.dt * self.motion_speed
@@ -65,7 +67,25 @@ class SnakeHead(GameObject):
         elif self.motion_step < 0: # finished turning / moving, move again
             self.motion_step = 2
             self.recenter_position()
-        # need to unpack
-        for ball in self.many_balls:
-            if self.intersects(ball).hit:
+
+    def eat_apple(self):
+        # need to removed collided apples, and add new one
+        apple_to_remove = -1
+        for i, apple in enumerate(self.many_apples):
+            if self.intersects(apple).hit:
+                apple_to_remove = i
                 print('player is inside trigger box')
+        if apple_to_remove > -1:
+            # remove eaten apple from list and destroy entity
+            eaten_apple = self.many_apples.pop(apple_to_remove)
+            destroy(eaten_apple)
+            # add a new apple to the playing area
+            number_of_apples = 25
+            i = randint(0, number_of_apples - 1)
+            j = randint(0, number_of_apples - 1)
+            k = randint(0, number_of_apples - 1)
+            self.many_apples.append(Apple(x=i*2, y=j*2, z=k*2))
+
+    def update(self) -> None:
+        self.move_turn()
+        self.eat_apple()

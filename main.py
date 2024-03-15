@@ -1,4 +1,4 @@
-from ursina import Ursina, Entity, Sky
+from ursina import Ursina, Sky
 from snake_head import SnakeHead
 from apple import Apple
 from random import randint
@@ -7,6 +7,7 @@ class MyGame:
     def __init__(self) -> None:
         self.app = Ursina()
 
+    '''
     def add_ground(self) -> None:
         self.ground = Entity(
             model = 'plane', 
@@ -14,8 +15,9 @@ class MyGame:
             texture = 'grass', 
             texture_scale = (4,4)
         )
+    '''
 
-    def add_balls(self) -> list[Entity]:
+    def add_apples(self):
         number_of_apples = 25
         list_of_apples = []
         for _ in range(number_of_apples):
@@ -26,8 +28,8 @@ class MyGame:
         return list_of_apples
 
     def run(self) -> None:
-        many_balls = self.add_balls()
-        snake_head = SnakeHead(many_balls=many_balls)
+        many_apples = self.add_apples()
+        snake_head = SnakeHead(many_apples=many_apples)
         #self.add_ground() # no longer need - have array of cubes # not seeing - possible camera error
         Sky()
         self.app.run()
