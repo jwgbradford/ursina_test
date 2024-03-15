@@ -1,6 +1,6 @@
 from ursina import Ursina, Sky
-from snake_head import SnakeHead
-from apple import Apple
+from my_objects.snake_head import SnakeHead
+from my_objects.apple import Apple 
 from random import randint
 
 class MyGame:

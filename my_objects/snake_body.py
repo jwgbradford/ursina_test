@@ -1,4 +1,4 @@
-from game_object import GameObject
+from my_objects.game_object import GameObject
 from ursina import time
 
 class SnakeBody(GameObject):

@@ -1,8 +1,8 @@
 from ursina import Entity
 from ursina import time, destroy
 from ursina import camera
-from game_object import GameObject
-from apple import Apple
+from my_objects.game_object import GameObject
+from my_objects.apple import Apple
 from utils import load_kwargs
 from random import randint
 
