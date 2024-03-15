@@ -65,8 +65,7 @@ class SnakeHead(GameObject):
         elif self.motion_step < 0: # finished turning / moving, move again
             self.motion_step = 2
             self.recenter_position()
-        '''
+        # need to unpack
         for ball in self.many_balls:
             if self.intersects(ball).hit:
                 print('player is inside trigger box')
-        '''

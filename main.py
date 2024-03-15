@@ -15,24 +15,20 @@ class MyGame:
             texture_scale = (4,4)
         )
 
-    def add_balls(self) -> list[list[list[Entity]]]:
-        array_size = 25
-        array_of_balls = [
-            [[None for _ in range(array_size)
-                    ] for _ in range(array_size)
-                        ] for _ in range(array_size)
-        ]
-        for _ in range(array_size):
-            i = randint(0, array_size - 1)
-            j = randint(0, array_size - 1)
-            k = randint(0, array_size - 1)
-            array_of_balls[i][j][k] = Apple(x=i*2, y=j*2, z=k*2)
-        return array_of_balls
+    def add_balls(self) -> list[Entity]:
+        number_of_apples = 25
+        list_of_apples = []
+        for _ in range(number_of_apples):
+            i = randint(0, number_of_apples - 1)
+            j = randint(0, number_of_apples - 1)
+            k = randint(0, number_of_apples - 1)
+            list_of_apples.append(Apple(x=i*2, y=j*2, z=k*2))
+        return list_of_apples
 
     def run(self) -> None:
-        self.snake_head = SnakeHead()
+        many_balls = self.add_balls()
+        snake_head = SnakeHead(many_balls=many_balls)
         #self.add_ground() # no longer need - have array of cubes # not seeing - possible camera error
-        self.many_balls = self.add_balls()
         Sky()
         self.app.run()
 
