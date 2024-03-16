@@ -29,7 +29,8 @@ class MyGame:
 
     def run(self) -> None:
         many_apples = self.add_apples()
-        snake_head = SnakeHead(many_apples=many_apples)
+        snake_body_list = []
+        snake_head = SnakeHead(many_apples=many_apples, snake_body_list=snake_body_list)
         #self.add_ground() # no longer need - have array of cubes # not seeing - possible camera error
         Sky()
         self.app.run()
@@ -37,6 +38,3 @@ class MyGame:
 if __name__ == '__main__':
     my_game = MyGame()
     my_game.run()
-
-# x=i, y=j, z=k, 
-#model="sphere", texture="grass"

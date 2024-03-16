@@ -3,6 +3,7 @@ from ursina import time, destroy
 from ursina import camera
 from my_objects.game_object import GameObject
 from my_objects.apple import Apple
+from my_objects.snake_body import SnakeBody
 from utils import load_kwargs
 from random import randint
 
@@ -12,6 +13,7 @@ class SnakeHead(GameObject):
         settings = load_kwargs("head_settings.json")
         for key, value in settings.items():
             setattr(self, key, value)
+        self.reset_rotation()
         # configure the camera
         self.camera_pivot = Entity(parent=self)
         camera.parent = self.camera_pivot # lock camera to head object
@@ -27,26 +29,35 @@ class SnakeHead(GameObject):
             cardinal_point = 0
         return cardinal_point * 90
 
+    def rotate_y_z(self, dir): # so not working atm
+        if self.rotation_x == 0 or self.rotation_x == 180:
+            self.rotation_dy = dir
+        else:
+            self.rotation_dy = dir * -1
+            self.rotation_dz = dir
+
     def input(self, key) -> None:
         if self.rotation_step == 0: # we're not already in a turn
             match key:
                 case self.turn_left:
-                    self.rotation_dy = -1
+                    self.rotate_y_z(-1)
                 case self.turn_right:
-                    self.rotation_dy = 1
+                    self.rotate_y_z(1)
                 case self.turn_up:
                     self.rotation_dx = -1
                 case self.turn_down:
                     self.rotation_dx = 1
-            if self.rotation_dx ^ self.rotation_dy:
+            if self.rotation_dx | self.rotation_dy | self.rotation_dz:
                 self.rotation_step = 90
 
     def reset_rotation(self) -> None:
             self.rotation_step = 0
             self.rotation_dx = 0
             self.rotation_dy = 0
+            self.rotation_dz = 0
             self.rotation_x = self.cardinalise(self.rotation_x)
             self.rotation_y = self.cardinalise(self.rotation_y)
+            self.rotation_z = self.cardinalise(self.rotation_z)
 
     def recenter_position(self) -> None:
         self.x = round(self.x, 0)
@@ -60,13 +71,19 @@ class SnakeHead(GameObject):
         elif self.rotation_step > 0: # start turn at end of next move
             self.rotation_x += (self.rotation_dx * time.dt * self.rotation_speed)
             self.rotation_y += (self.rotation_dy * time.dt * self.rotation_speed)
+            self.rotation_z += (self.rotation_dz * time.dt * self.rotation_speed)
             self.rotation_step -= time.dt * self.rotation_speed
             if self.rotation_step < 0: # reset turn to zero
                 self.reset_rotation()
                 self.recenter_position()
+                print(f'{self.rotation=}')
         elif self.motion_step < 0: # finished turning / moving, move again
             self.motion_step = 2
             self.recenter_position()
+
+    def add_body_segment(self):
+        position = self.position
+        self.snake_body_list.append(SnakeBody(position=position))
 
     def eat_apple(self):
         # need to removed collided apples, and add new one
@@ -74,7 +91,8 @@ class SnakeHead(GameObject):
         for i, apple in enumerate(self.many_apples):
             if self.intersects(apple).hit:
                 apple_to_remove = i
-                print('player is inside trigger box')
+                self.add_body_segment()
+                #print(f'{self.snake_body_list=}')
         if apple_to_remove > -1:
             # remove eaten apple from list and destroy entity
             eaten_apple = self.many_apples.pop(apple_to_remove)
